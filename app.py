@@ -20,25 +20,24 @@ def find_similar_comment(user_input, df, embeddings, top_k=3):
     return results
 
 
+st.title("Recherche de Commentaires Similaires")
 
-st.title("🎬 Comment Similarity Finder")
-
-st.write("Upload a CSV or choose one of the raw movie datasets.")
+st.write("Importez un fichier CSV ou choisissez l’un des jeux de données bruts disponibles.")
 
 
-source = st.radio("Select data source:", ["Upload CSV", "Use existing raw movie files"])
+source = st.radio("Sélectionnez la source des données :", ["Importer un CSV", "Utiliser un fichier existant"])
 
 df = None
 
-if source == "Upload CSV":
-    uploaded = st.file_uploader("Upload your CSV", type=["csv"])
+if source == "Importer un CSV":
+    uploaded = st.file_uploader("Importer votre fichier CSV :", type=["csv"])
     if uploaded:
         df = pd.read_csv(uploaded)
 
 else:
     file_choice = st.selectbox(
-        "Choose an existing RAW file:",
-        ["fightclub_critiques.csv", "interstellar_critique.csv"]  
+        "Choisissez un fichier brut existant :",
+        ["fightclub_critiques.csv", "interstellar_critique.csv"]
     )
     df = pd.read_csv(file_choice)
 
@@ -47,39 +46,31 @@ else:
 if df is not None:
 
     
-   
-   
-    st.info("Cleaning comments…")
     df["comment_clean"] = df["review_content"].astype(str).apply(cleaner.clean_text)
-    st.success("✨ Cleaning complete!")
+    
 
     
-    st.info("Computing embeddings… (first time may take a bit)")
+    
     comments = df["comment_clean"].tolist()
     embeddings = model.encode(comments, convert_to_tensor=True)
-    st.success("🎉 Embeddings ready!")
+   
 
-    # ==========================
-    # 5. User Query Section
-    # ==========================
-    st.header("💬 Search for Similar Comments")
+    mode = st.radio("Mode d’entrée :", ["Saisir un commentaire", "Sélectionner un commentaire existant"])
 
-    mode = st.radio("Input mode:", ["Type a comment", "Select from dataset"])
-
-    if mode == "Type a comment":
-        user_comment = st.text_area("Enter your comment:")
+    if mode == "Saisir un commentaire":
+        user_comment = st.text_area("Entrez votre commentaire :")
     else:
-        user_comment = st.selectbox("Pick a comment from the dataset:",
+        user_comment = st.selectbox("Choisissez un commentaire dans le dataset :",
                                     df["review_content"].tolist())
 
-    if st.button("🔍 Find Similar Comments"):
+    if st.button("Rechercher les commentaires similaires"):
         if user_comment.strip() == "":
-            st.error("⚠️ Please enter a comment.")
+            st.error("Veuillez saisir un commentaire.")
         else:
             results = find_similar_comment(user_comment, df, embeddings)
 
-            st.subheader("📊 Most Similar Comments")
+            st.subheader("Commentaires les plus similaires")
             for text, score in results:
-                st.markdown(f"**📝 Comment:** {text}")
-                st.markdown(f"**🔥 Similarity:** `{score:.4f}`")
+                st.markdown(f"**Commentaire :** {text}")
+                st.markdown(f"**Score de similarité :** `{score:.4f}`")
                 st.markdown("---")
