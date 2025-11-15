@@ -17,7 +17,7 @@ class Clean:
             "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
         )
 
-    def remove_emojis(self, text):
+    def rmemojis(self, text):
         emoji_pattern = re.compile(
             "["  
             u"\U0001F600-\U0001F64F"
@@ -44,7 +44,7 @@ class Clean:
 
         return " ".join(words)
 
-    def clean_dataframe(self, df, column_name):
+    def clean_df(self, df, column_name):
         df[column_name + "_clean"] = df[column_name].astype(str).apply(self.clean_text)
         return df
 
