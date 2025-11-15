@@ -52,24 +52,10 @@ Expérience simple :
 
 ## Utilisation de d'IA
 L’intégration de l’interface Streamlit et certaines suggestions ont été inspirées par des outils d’assistance à la programmation.
-## Architecture du système
 
-Voir le fichier **architecture.tex** (TikZ) dans le dossier.
-
-Résumé :
-
-1. **Utilisateur**  
-2. **Interface Streamlit**  
-3. **Chargement du CSV**  
-4. **Nettoyage via `Cleaner`**  
-5. **Encodage SBERT**  
-6. **Calcul Similarité Cosinus**  
-7. **Affichage des Top-k résultats**
 
 ---
 
-##  Installation
 
-```bash
-pip install -r requirements.txt
+
 
