@@ -50,11 +50,9 @@ Expérience simple :
 
 ---
 
-## Utilisation de d'IA
-L’intégration de l’interface Streamlit et certaines suggestions ont été inspirées par des outils d’assistance à la programmation.
-
 
 ---
+
 
 
 
